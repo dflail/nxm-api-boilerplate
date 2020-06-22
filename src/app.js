@@ -1,14 +1,12 @@
 const consoleUtils = require('./utils/console-utils');
 const dotenv = require('dotenv');
 const express = require('express');
-const { account } = require('./utils/app-data');
+const osLocale = require('os-locale');
 
 dotenv.config({ path: './app.env' });
 
 const app = express();
-console.log(`original pattern: ${account.fields.USER_NAME.PATTERN}`);
-account.fields.USER_NAME.PATTERN = '';
-console.log(`new pattern: ${account.fields.USER_NAME.PATTERN}`);
+const locale = osLocale.sync();
 
 app.get('/', (req, res) => {
   res.send(`${process.env.APP_NAME} v.${process.env.API_VERSION} READY`);
