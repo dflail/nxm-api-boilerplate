@@ -16,8 +16,14 @@ const logServerHeader = () => {
   );
 };
 
+const logDatabaseConnection = host => {
+  console.log(
+    `${chalk.green('Connected')} to MongoDB Atlas: ${chalk.blueBright(host)}`
+  );
+};
+
 const logError = err => {
   console.log(`${chalk.bgRed(' ERROR ')} ${err.message}`);
 };
 
-module.exports = { logServerHeader, logError };
+module.exports = { logServerHeader, logError, logDatabaseConnection };

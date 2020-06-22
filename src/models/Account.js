@@ -22,7 +22,51 @@ const schema = new mongoose.Schema({
     required: [true, account.fields.PASSWORD.RULES],
     match: [account.fields.PASSWORD.PATTERN, account.fields.PASSWORD.RULES],
     select: false
+  },
+  firstName: String,
+  lastName: String,
+  resetToken: String,
+  resetExpire: Date
+});
+
+schema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next();
+  }
+
+  try {
+    const hash = await argon2.hash(this.password, { type: argon2.argon2id });
+    let user = this;
+    user.password = hash;
+    next();
+  } catch (err) {
+    return next(err);
   }
 });
+
+schema.methods.getSignedToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE
+  });
+};
+
+schema.methods.verifyPassword = async function (passIn) {
+  try {
+    return await argon2.verify(this.password, passIn);
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+schema.methods.getResetToken = function () {
+  const resetToken = crypto.randomBytes(20).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  this.passwordResetExpire = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
 
 module.exports = mongoose.model(account.MODEL_NAME, schema);

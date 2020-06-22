@@ -1,6 +1,7 @@
 const consoleUtils = require('./utils/console-utils');
 const dotenv = require('dotenv');
 const express = require('express');
+const connectDB = require('./db/database');
 
 dotenv.config({ path: './app.env' });
 
@@ -13,6 +14,8 @@ app.get('/', (req, res) => {
 const server = app.listen(process.env.PORT, () =>
   consoleUtils.logServerHeader()
 );
+
+connectDB();
 
 process.on('unhandledRejection', err => {
   consoleUtils.logError(err);
