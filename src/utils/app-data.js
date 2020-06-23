@@ -30,8 +30,19 @@ const constants = Object.freeze({
       })
     })
   }),
-  // Constants utilized throughout the project that are not specific to any specific type of file
-  common: Object.freeze({})
+  // Constants utilized throughout the project that are not specific to any type of file
+  common: Object.freeze({}),
+  // Contains unfrozen nested child Objects only used for testing.
+  // The idea is to confirm that the nested objects are mutable, which we don't want in
+  // our real constants.
+  testing: Object.freeze({
+    foo: {
+      bar: {
+        foobar:
+          'bar and foobar are mutable, and hence - BAD for the purposes of this file.'
+      }
+    }
+  })
 });
 
 module.exports = { account: constants.models.ACCOUNT };

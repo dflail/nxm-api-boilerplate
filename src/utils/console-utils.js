@@ -7,7 +7,7 @@ const chalk = require('chalk');
 const logServerHeader = () => {
   console.log(
     `${chalk.black.bgYellowBright(`\n ${process.env.APP_NAME} `)}${chalk.bgBlue(
-      ` ${process.env.APP_ENV} `
+      ` ${process.env.NODE_ENV} `
     )} \n${chalk.blackBright(`api version: ${process.env.API_VERSION}`)}`
   );
 
