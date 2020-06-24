@@ -4,6 +4,8 @@ const { logError } = require('../utils/console-utils');
 
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
+  error.message = err.message;
+  // console.log(err);
 
   if (err.name === 'CastError') {
     error = new MongooseError(errors.NOT_FOUND, errors.CAST_ERROR, 404);

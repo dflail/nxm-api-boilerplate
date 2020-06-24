@@ -1,4 +1,9 @@
 class ApplicationError extends Error {
+  // constructor() {
+  //   super();
+  //   Error.captureStackTrace(this, this.constructor);
+  // }
+
   get name() {
     return this.constructor.name;
   }
@@ -7,8 +12,18 @@ class ApplicationError extends Error {
 class DatabaseError extends ApplicationError {}
 
 class UserFacingError extends ApplicationError {
+  constructor(message, statusCode) {
+    super(message);
+
+    this._statusCode = statusCode;
+  }
+
   get statusCode() {
-    return this.statusCode;
+    return this._statusCode;
+  }
+
+  set statusCode(code) {
+    this._statusCode = code;
   }
 }
 

@@ -24,7 +24,7 @@ const logDatabaseConnection = host => {
 
 const logError = err => {
   console.log(
-    `${chalk.bgRed(' ERROR ')} ${chalk.green(err.statusCode)} ${err.message}`
+    `${chalk.bgRed(err.name)} ${chalk.green(err.statusCode)} ${err.message}`
   );
 };
 

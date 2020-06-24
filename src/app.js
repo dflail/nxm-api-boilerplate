@@ -1,4 +1,4 @@
-const { logServerHeader } = require('./utils/console-utils');
+const { logServerHeader, logError } = require('./utils/console-utils');
 const dotenv = require('dotenv');
 const express = require('express');
 const { connectDB } = require('./db/database');
@@ -9,11 +9,15 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const limiter = require('express-rate-limit');
 const hpp = require('hpp');
+const accounts = require('./routes/accounts');
+const errorHandler = require('./middleware/error-handler');
 
 dotenv.config({ path: './app.env' });
 
-const app = express();
 const ENV = process.env.NODE_ENV;
+const app = express();
+
+app.use(express.json());
 
 if (ENV === 'DEVELOPMENT') {
   app.use(morgan('dev'));
@@ -32,12 +36,17 @@ const limit = limiter({
 app.use(limit);
 app.use(hpp());
 
+const BASE_URL = process.env.BASE_URL + process.env.VERSION_URL;
+app.use(`${BASE_URL}accounts`, accounts);
+
 const server = app.listen(process.env.PORT, () => logServerHeader());
 
 connectDB();
 
+app.use(errorHandler);
+
 process.on('unhandledRejection', err => {
   err.statusCode = 500;
-  consoleUtils.logError(err);
+  logError(err);
   server.close(() => process.exit(1));
 });

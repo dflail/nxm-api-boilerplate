@@ -1,9 +1,11 @@
 const asyncHandler = require('../middleware/async-handler');
+const { Account, RefreshToken } = require('../db/database');
+const AppError = require('../class/AppError');
 
-//  ROUTE          POST /api/v1/account/register
+//  ROUTE          POST /api/v1/accounts/registration
 //  ACCESS         Public
 //  DESC           Register a new account
-exports.register = asyncHandler(async (req, res, next) => {
+exports.registration = asyncHandler(async (req, res, next) => {
   const { userName, email, password } = req.body;
 
   const account = await Account.create({
@@ -13,8 +15,9 @@ exports.register = asyncHandler(async (req, res, next) => {
   });
 
   if (!account) {
-    console.log('ERROR');
-    //   return next()
+    return next(
+      new AppError.MongooseError(AppError.errors.BAD_REQUEST, 'Account', 400)
+    );
   }
 
   sendTokenResponse(account, 200, res);
@@ -24,7 +27,7 @@ const sendTokenResponse = async (account, statusCode, res) => {
   const accessToken = account.getSignedToken();
   const expDate = new Date(Date.now());
   expDate.setTime(
-    expDate.getTime() + process.env.REF_DB_EXPIRE * 24 * 60 * 60 * 1000
+    expDate.getTime() + process.env.DB_REFRESH_EXPIRE * 24 * 60 * 60 * 1000
   );
 
   const options = { expires: expDate, httpOnly: true };

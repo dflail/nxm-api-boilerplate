@@ -25,24 +25,10 @@ class ForbiddenError extends UserFacingError {
   }
 }
 
-// class InternalError extends UserFacingError {
-//   constructor(details) {
-//     super(
-//       details
-//         ? `${errors.INTERNAL}${errors.DETAILS}${details}`
-//         : `${errors.INTERNAL}`,
-//       500
-//     );
-//     this.details = details;
-//   }
-// }
-
 class MongooseError extends UserFacingError {
   constructor(message, details, statusCode) {
     super(
-      details
-        ? `${errors.BAD_REQUEST}${errors.DETAILS}${details}`
-        : `${errors.BAD_REQUEST}`,
+      details ? `${message}${errors.DETAILS}${details}` : `${message}`,
       statusCode
     );
   }
@@ -64,7 +50,7 @@ module.exports = {
   AuthenticationError,
   BadRequestError,
   ForbiddenError,
-  // InternalError,
   MongooseError,
-  NotFoundError
+  NotFoundError,
+  errors
 };

@@ -50,6 +50,12 @@ schema.methods.getSignedToken = function () {
   });
 };
 
+schema.methods.getRefreshToken = function () {
+  return jwt.sign({ id: this._id }, process.env.REFRESH_SECRET, {
+    expiresIn: process.env.REFRESH_EXPIRE
+  });
+};
+
 schema.methods.verifyPassword = async function (passIn) {
   try {
     return await argon2.verify(this.password, passIn);
