@@ -23,7 +23,9 @@ const logDatabaseConnection = host => {
 };
 
 const logError = err => {
-  console.log(`${chalk.bgRed(' ERROR ')} ${err.message}`);
+  console.log(
+    `${chalk.bgRed(' ERROR ')} ${chalk.green(err.statusCode)} ${err.message}`
+  );
 };
 
 module.exports = { logServerHeader, logError, logDatabaseConnection };

@@ -10,6 +10,12 @@ const connectDB = async () => {
   });
 
   logDatabaseConnection(conn.connection.host);
+
+  return;
 };
 
-module.exports = connectDB;
+module.exports = {
+  connectDB,
+  Account: require('../models/Account'),
+  RefreshToken: require('../models/RefreshToken')
+};

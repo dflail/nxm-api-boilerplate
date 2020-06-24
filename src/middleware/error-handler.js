@@ -1,27 +1,29 @@
-const errorHandler = (err, req, res, next) => {
-  switch (true) {
-    case typeof err === 'string':
-      const is404 = err.toLowerCase().endsWith('not found');
-      const statusCode = is404 ? 404 : 400;
-      return res.status(statusCode).json({ message: err });
-  }
-};
-// module.exports = errorHandler;
+const { MongooseError } = require('../class/AppError');
+const { errors } = require('../utils/app-data');
+const { logError } = require('../utils/console-utils');
 
-// function errorHandler(err, req, res, next) {
-//     switch (true) {
-//         case typeof err === 'string':
-//             // custom application error
-//             const is404 = err.toLowerCase().endsWith('not found');
-//             const statusCode = is404 ? 404 : 400;
-//             return res.status(statusCode).json({ message: err });
-//         case err.name === 'ValidationError':
-//             // mongoose validation error
-//             return res.status(400).json({ message: err.message });
-//         case err.name === 'UnauthorizedError':
-//             // jwt authentication error
-//             return res.status(401).json({ message: 'Unauthorized' });
-//         default:
-//             return res.status(500).json({ message: err.message });
-//     }
-// }
+const errorHandler = (err, req, res, next) => {
+  let error = { ...err };
+
+  if (err.name === 'CastError') {
+    error = new MongooseError(errors.NOT_FOUND, errors.CAST_ERROR, 404);
+  }
+
+  if (err.name === 'ValidationError') {
+    let message = Object.values(err.errors).map(val => val.message);
+    error = new MongooseError(message, null, 400);
+  }
+
+  if (err.code === 11000) {
+    error = new MongooseError(errors.MONGOOSE_DUPLICATE, null, 400);
+  }
+
+  res.status(error.statusCode || 500).json({
+    success: false,
+    error: error.message || errors.INTERNAL
+  });
+
+  logError(error);
+};
+
+module.exports = errorHandler;
