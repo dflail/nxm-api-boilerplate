@@ -1,5 +1,4 @@
 const asyncHandler = require('../middleware/async-handler');
-const crypto = require('crypto');
 
 //  ROUTE          POST /api/v1/account/register
 //  ACCESS         Public
