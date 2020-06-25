@@ -23,6 +23,43 @@ exports.registration = asyncHandler(async (req, res, next) => {
   sendTokenResponse(account, 200, res);
 });
 
+//  ROUTE          POST /api/v1/auth/login
+//  ACCESS         Public
+//  DESC           Login an existing user
+exports.login = asyncHandler(async (req, res, next) => {
+  const { userName, password } = req.body;
+
+  if (!userName || !password) {
+    return next(new AppError.AuthenticationError());
+  }
+
+  const account = await Account.findOne({ userName }).select('+password');
+
+  if (!account) {
+    return next(new AppError.NotFoundError(account.constructor.modelName));
+  }
+
+  const isMatch = await account.verifyPassword(password);
+
+  if (!isMatch) {
+    return next(new AppError.AuthenticationError());
+  }
+
+  sendTokenResponse(account, 200, res);
+});
+
+//  ROUTE          GET /api/v1/accounts/logout
+//  ACCESS         Private
+//  DESC           Logout of current account and clear cookie
+exports.logout = asyncHandler(async (req, res, next) => {
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now()),
+    httpOnly: true
+  });
+
+  res.status(200).json({ success: true, data: {} });
+});
+
 const sendTokenResponse = async (account, statusCode, res) => {
   const accessToken = account.getSignedToken();
   const expDate = new Date(Date.now());

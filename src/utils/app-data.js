@@ -5,7 +5,7 @@ const models = Object.freeze({
       USER_NAME: Object.freeze({
         PATTERN: /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,15})$/,
         RULES:
-          'User Name must be alphanumeric with at least one number, one letter, and be between 6-15 character in length.'
+          'User Name must be alphanumeric with at least one number, one letter, and be between 6-15 characters in length.'
       }),
       EMAIL: Object.freeze({
         PATTERN: /^.+@[^\.].*\.[a-z]{2,}$/,

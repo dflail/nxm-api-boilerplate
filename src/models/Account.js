@@ -36,8 +36,8 @@ schema.pre('save', async function (next) {
 
   try {
     const hash = await argon2.hash(this.password, { type: argon2.argon2id });
-    let user = this;
-    user.password = hash;
+    let account = this;
+    account.password = hash;
     next();
   } catch (err) {
     return next(err);

@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "99399be8-8532-4bb7-9245-9262f44682ae",
+		"name": "NPX-API-Boilerplate",
+		"description": "Boilerplate template repository for creating Node JS apis using Express and Mongo DB (Atlas).\r\nJWT Access / Refresh Authentication and password reset functionality is included.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "Account Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aa3c62ca-1e69-483e-8e55-39928082abfb",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", null)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}{{API_VERSION}}accounts/logout",
+							"host": [
+								"{{BASE_URL}}{{API_VERSION}}accounts"
+							],
+							"path": [
+								"logout"
+							]
+						},
+						"description": "Logout of Account"
+					},
+					"response": []
+				},
+				{
+					"name": "Account Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7b5d6e2d-2fc3-4fd8-a69a-e241067a6f35",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().accessToken)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Content Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"tester1\",\r\n    \"email\":\"test1@test.com\",\r\n    \"password\":\"Test1pass!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}{{API_VERSION}}accounts/registration",
+							"host": [
+								"{{BASE_URL}}{{API_VERSION}}accounts"
+							],
+							"path": [
+								"registration"
+							]
+						},
+						"description": "Register a new user Account.\r\n\r\nBODY\r\n    REQUIRED:\r\n        userName: String\r\n        email: String\r\n        password: String\r\n\r\n    OPTIONAL:\r\n        firstName: String\r\n        lastName: String"
+					},
+					"response": []
+				},
+				{
+					"name": "Account Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "21a4231c-cc6f-4940-bfa9-8a208058b794",
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().accessToken)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "JSON Content Type",
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"tester1\",\r\n    \"password\":\"Test1pass!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}{{API_VERSION}}accounts/login",
+							"host": [
+								"{{BASE_URL}}{{API_VERSION}}accounts"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Log into an existing user Account.\r\n\r\nBODY\r\n    REQUIRED:\r\n        userName: String\r\n        password: String"
+					},
+					"response": []
+				}
+			],
+			"description": "User Accounts folder for handling authentication/authorization.",
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
