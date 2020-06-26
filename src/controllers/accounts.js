@@ -6,12 +6,14 @@ const AppError = require('../class/AppError');
 //  ACCESS         Public
 //  DESC           Register a new account
 exports.registration = asyncHandler(async (req, res, next) => {
-  const { userName, email, password } = req.body;
+  const { userName, email, password, firstName, lastName } = req.body;
 
   const account = await Account.create({
     userName,
     email,
-    password
+    password,
+    firstName,
+    lastName
   });
 
   if (!account) {
@@ -20,7 +22,7 @@ exports.registration = asyncHandler(async (req, res, next) => {
     );
   }
 
-  sendTokenResponse(account, 200, res);
+  sendTokenResponse(account, 200, req, res);
 });
 
 //  ROUTE          POST /api/v1/auth/login
@@ -36,7 +38,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   const account = await Account.findOne({ userName }).select('+password');
 
   if (!account) {
-    return next(new AppError.NotFoundError(account.constructor.modelName));
+    return next(new AppError.NotFoundError(Account.modelName));
   }
 
   const isMatch = await account.verifyPassword(password);
@@ -45,13 +47,24 @@ exports.login = asyncHandler(async (req, res, next) => {
     return next(new AppError.AuthenticationError());
   }
 
-  sendTokenResponse(account, 200, res);
+  sendTokenResponse(account, 200, req, res);
 });
 
 //  ROUTE          GET /api/v1/accounts/logout
 //  ACCESS         Private
 //  DESC           Logout of current account and clear cookie
 exports.logout = asyncHandler(async (req, res, next) => {
+  if (req.cookies.token) {
+    const refreshToken = await RefreshToken.findOne({
+      token: req.cookies.token
+    });
+
+    if (refreshToken && refreshToken.isActive) {
+      refreshToken.revoked = new Date(Date.now());
+      await refreshToken.save();
+    }
+  }
+
   res.cookie('token', 'none', {
     expires: new Date(Date.now()),
     httpOnly: true
@@ -60,7 +73,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: {} });
 });
 
-const sendTokenResponse = async (account, statusCode, res) => {
+const sendTokenResponse = async (account, statusCode, req, res) => {
   const accessToken = account.getSignedToken();
   const expDate = new Date(Date.now());
   expDate.setTime(
@@ -72,11 +85,22 @@ const sendTokenResponse = async (account, statusCode, res) => {
     options.secure = true;
   }
 
-  const refreshToken = await RefreshToken.create({
-    account,
-    token: account.getRefreshToken(),
-    expires: expDate
-  });
+  let refreshToken;
+  if (req.cookies.token) {
+    refreshToken = await RefreshToken.findOneAndUpdate(
+      { token: req.cookies.token },
+      { revoked: new Date(Date.now()) },
+      { new: true }
+    );
+  }
+
+  if (!refreshToken || !refreshToken.isActive()) {
+    refreshToken = await RefreshToken.create({
+      account,
+      token: account.getRefreshToken(),
+      expires: expDate
+    });
+  }
 
   res
     .status(statusCode)

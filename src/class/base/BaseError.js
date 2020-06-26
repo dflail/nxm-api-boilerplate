@@ -1,9 +1,4 @@
 class ApplicationError extends Error {
-  // constructor() {
-  //   super();
-  //   Error.captureStackTrace(this, this.constructor);
-  // }
-
   get name() {
     return this.constructor.name;
   }
@@ -20,10 +15,6 @@ class UserFacingError extends ApplicationError {
 
   get statusCode() {
     return this._statusCode;
-  }
-
-  set statusCode(code) {
-    this._statusCode = code;
   }
 }
 

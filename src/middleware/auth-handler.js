@@ -5,15 +5,15 @@ const { Account, RefreshToken } = require('../db/database');
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
-
   if (
     // Set token from headers if they exist
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.token) {
-    // Otherwise, request a new access token using the refresh token
+  }
+
+  if ((!token || token === 'null') && req.cookies.token) {
     const refreshToken = await RefreshToken.findOne({
       token: req.cookies.token
     });
@@ -32,7 +32,7 @@ const protect = asyncHandler(async (req, res, next) => {
     token = account.getSignedToken();
   }
 
-  if (!token) {
+  if (!token || token === 'null') {
     return next(new AuthenticationError());
   }
 

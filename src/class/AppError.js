@@ -10,9 +10,7 @@ class AuthenticationError extends UserFacingError {
 class BadRequestError extends UserFacingError {
   constructor(details) {
     super(
-      details
-        ? `${errors.BAD_REQUEST}${errors.DETAILS}${details}`
-        : `${errors.BAD_REQUEST}`,
+      details ? `${errors.BAD_REQUEST} (${details})` : `${errors.BAD_REQUEST}`,
       400
     );
     this.details = details;
@@ -27,19 +25,14 @@ class ForbiddenError extends UserFacingError {
 
 class MongooseError extends UserFacingError {
   constructor(message, details, statusCode) {
-    super(
-      details ? `${message}${errors.DETAILS}${details}` : `${message}`,
-      statusCode
-    );
+    super(details ? `${message} (${details})` : `${message}`, statusCode);
   }
 }
 
 class NotFoundError extends UserFacingError {
   constructor(details) {
     super(
-      details
-        ? `${errors.NOT_FOUND}${errors.DETAILS}${details}`
-        : `${errors.NOT_FOUND}`,
+      details ? `${errors.NOT_FOUND} (${details})` : `${errors.NOT_FOUND}`,
       404
     );
     this.details = details;
