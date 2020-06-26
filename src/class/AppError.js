@@ -1,16 +1,18 @@
 const { UserFacingError } = require('./base/BaseError');
-const { errors } = require('../utils/app-data');
+const { errorOutput } = require('../utils/string-constants');
 
 class AuthenticationError extends UserFacingError {
   constructor() {
-    super(errors.AUTH, 401);
+    super(errorOutput.AUTH, 401);
   }
 }
 
 class BadRequestError extends UserFacingError {
   constructor(details) {
     super(
-      details ? `${errors.BAD_REQUEST} (${details})` : `${errors.BAD_REQUEST}`,
+      details
+        ? `${errorOutput.BAD_REQUEST} (${details})`
+        : `${errorOutput.BAD_REQUEST}`,
       400
     );
     this.details = details;
@@ -19,7 +21,7 @@ class BadRequestError extends UserFacingError {
 
 class ForbiddenError extends UserFacingError {
   constructor() {
-    super(errors.FORBIDDEN, 403);
+    super(errorOutput.FORBIDDEN, 403);
   }
 }
 
@@ -32,7 +34,9 @@ class MongooseError extends UserFacingError {
 class NotFoundError extends UserFacingError {
   constructor(details) {
     super(
-      details ? `${errors.NOT_FOUND} (${details})` : `${errors.NOT_FOUND}`,
+      details
+        ? `${errorOutput.NOT_FOUND} (${details})`
+        : `${errorOutput.NOT_FOUND}`,
       404
     );
     this.details = details;

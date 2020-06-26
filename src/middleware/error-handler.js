@@ -1,5 +1,5 @@
 const { MongooseError } = require('../class/AppError');
-const { errors } = require('../utils/app-data');
+const { errorOutput } = require('../utils/string-constants');
 const { logError } = require('../utils/console-utils');
 
 const errorHandler = (err, req, res, next) => {
@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next) => {
   error.statusCode = err.statusCode;
 
   if (err.name === 'CastError') {
-    error = new MongooseError(errors.NOT_FOUND, err.message, 404);
+    error = new MongooseError(errorOutput.NOT_FOUND, err.message, 404);
   }
 
   if (err.name === 'ValidationError') {
@@ -18,12 +18,12 @@ const errorHandler = (err, req, res, next) => {
   }
 
   if (err.code === 11000) {
-    error = new MongooseError(errors.MONGOOSE_DUPLICATE, err.message, 400);
+    error = new MongooseError(errorOutput.MONGOOSE_DUPLICATE, err.message, 400);
   }
 
   res.status(error.statusCode || 500).json({
     success: false,
-    error: error.message || errors.INTERNAL
+    error: error.message || errorOutput.INTERNAL
   });
 
   logError(error);
