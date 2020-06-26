@@ -1,7 +1,14 @@
-const accountController = require('../../src/controllers/accounts');
+const AccountController = require('../../src/controllers/accounts');
+const { Account, RefreshToken } = require('../../src/db/database');
 
-describe('loginWithoutAccount', () => {
-  it('should have an existing login route', () => {
-    expect(typeof accountController.login).toBe('function');
+Account.create = jest.fn();
+
+describe('registerNewAccount', () => {
+  it('should have an existing registration route', () => {
+    expect(typeof AccountController.registration).toBe('function');
+  });
+  it('should try to create a new account', () => {
+    AccountController.create();
+    expect(Account.create()).toBeCalled();
   });
 });

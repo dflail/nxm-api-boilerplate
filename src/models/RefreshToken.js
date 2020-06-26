@@ -1,27 +1,26 @@
 const mongoose = require('mongoose');
 const { refreshToken } = require('../utils/app-data');
 
-const RefreshTokenSchema = new mongoose.Schema({
-  account: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Account',
-    required: [true, refreshToken.fields.ACCOUNT]
+const RefreshTokenSchema = new mongoose.Schema(
+  {
+    account: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Account',
+      required: [true, refreshToken.fields.ACCOUNT]
+    },
+    token: {
+      type: String,
+      required: [true, refreshToken.fields.TOKEN],
+      unique: true
+    },
+    expires: {
+      type: Date,
+      required: [true, refreshToken.fields.EXPIRES]
+    },
+    revoked: Date
   },
-  token: {
-    type: String,
-    required: [true, refreshToken.fields.TOKEN],
-    unique: true
-  },
-  expires: {
-    type: Date,
-    required: [true, refreshToken.fields.EXPIRES]
-  },
-  revoked: Date,
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+  { timestamps: true }
+);
 
 RefreshTokenSchema.methods.isExpired = function () {
   return Date.now() >= this.expires;
