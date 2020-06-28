@@ -2,6 +2,38 @@ const asyncHandler = require('../middleware/async-handler');
 const { Account, RefreshToken } = require('../db/database');
 const AppError = require('../class/AppError');
 
+//  ROUTE          GET /api/v1/accounts/current
+//  ACCESS         Private
+//  DESC           Get current user account
+exports.current = asyncHandler(async (req, res, next) => {
+  const account = await Account.findById(req.account.id);
+
+  res.status(200).json({ success: true, data: account });
+});
+
+//  ROUTE          GET /api/v1/accounts/logout
+//  ACCESS         Private
+//  DESC           Logout of current account and clear cookie
+exports.logout = asyncHandler(async (req, res, next) => {
+  if (req.cookies.token) {
+    const refreshToken = await RefreshToken.findOne({
+      token: req.cookies.token
+    });
+
+    if (refreshToken && refreshToken.isActive) {
+      refreshToken.revoked = new Date(Date.now());
+      await refreshToken.save();
+    }
+  }
+
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now()),
+    httpOnly: true
+  });
+
+  res.status(200).json({ success: true, data: {} });
+});
+
 //  ROUTE          POST /api/v1/accounts/registration
 //  ACCESS         Public
 //  DESC           Register a new account
@@ -18,11 +50,15 @@ exports.registration = asyncHandler(async (req, res, next) => {
 
   if (!account) {
     return next(
-      new AppError.MongooseError(AppError.errors.BAD_REQUEST, 'Account', 400)
+      new AppError.MongooseError(
+        AppError.errorOutput.BAD_REQUEST,
+        'Account',
+        400
+      )
     );
   }
 
-  sendTokenResponse(account, 200, req, res);
+  sendTokenResponse(account, 201, req, res);
 });
 
 //  ROUTE          POST /api/v1/auth/login
@@ -48,29 +84,6 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   sendTokenResponse(account, 200, req, res);
-});
-
-//  ROUTE          GET /api/v1/accounts/logout
-//  ACCESS         Private
-//  DESC           Logout of current account and clear cookie
-exports.logout = asyncHandler(async (req, res, next) => {
-  if (req.cookies.token) {
-    const refreshToken = await RefreshToken.findOne({
-      token: req.cookies.token
-    });
-
-    if (refreshToken && refreshToken.isActive) {
-      refreshToken.revoked = new Date(Date.now());
-      await refreshToken.save();
-    }
-  }
-
-  res.cookie('token', 'none', {
-    expires: new Date(Date.now()),
-    httpOnly: true
-  });
-
-  res.status(200).json({ success: true, data: {} });
 });
 
 const sendTokenResponse = async (account, statusCode, req, res) => {

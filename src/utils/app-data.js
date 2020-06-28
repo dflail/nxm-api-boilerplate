@@ -1,4 +1,4 @@
-const { errorOutput, modelOutput } = require('./string-constants');
+const { modelOutput } = require('./string-constants');
 
 const models = Object.freeze({
   ACCOUNT: Object.freeze({
@@ -27,17 +27,6 @@ const models = Object.freeze({
     })
   })
 });
-
-// Feel free to add some more elaborate error message copy if desired.
-// const errors = Object.freeze({
-//   AUTH: errorOutput.AUTH_ERROR,
-//   BAD_REQUEST: errorOutput.BAD_REQUEST,
-//   FORBIDDEN: errorOutput.FORBIDDEN,
-//   INTERNAL: errorOutput.INTERNAL,
-//   MONGOOSE_CAST: errorOutput.MONGOOSE_CAST,
-//   MONGOOSE_DUPLICATE: errorOutput.MONGOOSE_DUPLICATE,
-//   NOT_FOUND: errorOutput.NOT_FOUND
-// });
 
 module.exports = {
   account: models.ACCOUNT,

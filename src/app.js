@@ -1,3 +1,5 @@
+// 'use strict';
+
 const { logServerHeader, logError } = require('./utils/console-utils');
 const dotenv = require('dotenv');
 const express = require('express');
@@ -13,6 +15,9 @@ const accounts = require('./routes/accounts');
 const errorHandler = require('./middleware/error-handler');
 
 dotenv.config({ path: './app.env' });
+
+// const { errorOutput, modelOutput } = require('./utils/string-constants');
+// errorOutput.AUTH_ERROR = 'Well shit';
 
 const ENV = process.env.NODE_ENV;
 const app = express();
@@ -50,3 +55,5 @@ process.on('unhandledRejection', err => {
   logError(err);
   server.close(() => process.exit(1));
 });
+
+module.exports = app;
