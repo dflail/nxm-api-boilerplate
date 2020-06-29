@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const dbHandler = require('../../src/db/testDatabase');
 const Account = require('../../src/models/Account');
 
@@ -36,10 +35,15 @@ describe('Account Model', () => {
   });
 
   it('can be retrieved from the database', async () => {
-    const findAccount = await Account.findOne({ userName: 'tester1' }).select(
+    const account = await Account.findOne({ userName: 'tester1' });
+    expect(account).not.toBeNull;
+  });
+
+  it('has an encrypted password', async () => {
+    const account = await Account.findOne({ userName: 'tester1' }).select(
       '+password'
     );
-    console.log(findAccount);
-    expect(findAccount.email).toBe('test1@test.com');
+    const isEncrypted = account.password.startsWith('$argon2id');
+    expect(isEncrypted).toBe(true);
   });
 });
