@@ -23,8 +23,8 @@ describe('RefreshToken model', () => {
   });
 
   afterAll(async () => {
-    await dbHandler.terminateDb();
     await dbHandler.clearDb();
+    await dbHandler.terminateDb();
   });
 
   it('cannot be created using invalid data', async () => {

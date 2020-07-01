@@ -13,7 +13,7 @@ class AuthenticationError extends UserFacingError {
 class BadRequestError extends UserFacingError {
   /**
    * @description Error intended to be displayed for non-mongoose bad requests.
-   * @param {*} details
+   * @param {String} details
    */
   constructor(details) {
     super(
@@ -50,7 +50,7 @@ class MongooseError extends UserFacingError {
 class NotFoundError extends UserFacingError {
   /**
    * @description Resource not found.
-   * @param {*} details Specific details about the error.
+   * @param {String} details Specific details about the error.
    */
   constructor(details) {
     super(

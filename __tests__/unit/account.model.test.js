@@ -23,8 +23,8 @@ describe('Account Model', () => {
   });
 
   afterAll(async () => {
-    await dbHandler.terminateDb();
     await dbHandler.clearDb();
+    await dbHandler.terminateDb();
   });
 
   let account;

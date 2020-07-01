@@ -22,6 +22,10 @@ exports.clearDb = async () => {
   }
 };
 
+exports.getTestUri = async () => await mongod.getUri();
+
+exports.checkConnection = () => mongoose.connection.readyState;
+
 exports.terminateDb = async () => {
   await mongoose.connection.dropDatabase();
   await mongoose.disconnect();
