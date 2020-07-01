@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=PRODUCTION node src/app",
     "dev": "nodemon src/app",
-    "test": "jest --watchAll"
+    "test": "npx jest --runInBand --verbose --watchAll"
   },
   "repository": {
     "type": "git",

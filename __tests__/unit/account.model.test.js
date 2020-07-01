@@ -1,5 +1,5 @@
 const dbHandler = require('../../src/db/testDatabase');
-const Account = require('../../src/models/Account');
+const { Account } = require('../../src/db/database');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
@@ -101,8 +101,8 @@ describe('Account Model', () => {
   });
 
   it('returns a valid reset token', async () => {
-    expect(account.passwordResetToken).toBe(undefined);
-    expect(account.passwordResetExpire).toBe(undefined);
+    expect(account.resetToken).toBe(undefined);
+    expect(account.resetExpire).toBe(undefined);
 
     await account.getResetToken();
     expect(account.resetToken).not.toBe(null);
