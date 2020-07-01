@@ -1,4 +1,5 @@
 const argon2 = require('argon2');
+const crypto = require('crypto');
 const { account } = require('../utils/app-data');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
@@ -37,14 +38,10 @@ schema.pre('save', async function (next) {
     next();
   }
 
-  try {
-    const hash = await argon2.hash(this.password, { type: argon2.argon2id });
-    let account = this;
-    account.password = hash;
-    next();
-  } catch (err) {
-    return next(err);
-  }
+  const hash = await argon2.hash(this.password, { type: argon2.argon2id });
+  let account = this;
+  account.password = hash;
+  next();
 });
 
 schema.methods.getSignedToken = function () {
@@ -68,12 +65,12 @@ schema.methods.verifyPassword = async function (passIn) {
 };
 
 schema.methods.getResetToken = function () {
-  const resetToken = crypto.randomBytes(20).toString('hex');
-  this.passwordResetToken = crypto
+  const resetToken = crypto.randomBytes(64).toString('hex');
+  this.resetToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-  this.passwordResetExpire = Date.now() + 10 * 60 * 1000;
+  this.resetExpire = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
 };
