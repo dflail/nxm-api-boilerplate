@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=PRODUCTION node src/app",
     "dev": "nodemon src/app",
-    "test": "jest"
+    "test": "npx jest --runInBand --verbose --watchAll"
   },
   "repository": {
     "type": "git",
@@ -19,12 +19,14 @@
   },
   "homepage": "https://github.com/dflail/nxm-api-boilerplate#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.3",
     "jest": "^26.0.1",
+    "mongodb-memory-server": "^6.6.1",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
     "argon2": "^0.26.2",
-    "body-parser": "^1.19.0",
     "chalk": "^4.1.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",

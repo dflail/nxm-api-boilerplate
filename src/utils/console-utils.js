@@ -7,7 +7,7 @@ const chalk = require('chalk');
 const logServerHeader = () => {
   console.log(
     `${chalk.black.bgYellowBright(`\n ${process.env.APP_NAME} `)}${chalk.bgBlue(
-      ` ${process.env.APP_ENV} `
+      ` ${process.env.NODE_ENV} `
     )} \n${chalk.blackBright(`api version: ${process.env.API_VERSION}`)}`
   );
 
@@ -16,8 +16,16 @@ const logServerHeader = () => {
   );
 };
 
-const logError = err => {
-  console.log(`${chalk.bgRed(' ERROR ')} ${err.message}`);
+const logDatabaseConnection = host => {
+  console.log(
+    `${chalk.green('Connected')} to MongoDB Atlas: ${chalk.blueBright(host)}`
+  );
 };
 
-module.exports = { logServerHeader, logError };
+const logError = err => {
+  console.log(
+    `${chalk.bgRed(err.name)} ${chalk.green(err.statusCode)} ${err.message}`
+  );
+};
+
+module.exports = { logServerHeader, logError, logDatabaseConnection };
