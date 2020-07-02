@@ -4,8 +4,6 @@ class ApplicationError extends Error {
   }
 }
 
-class DatabaseError extends ApplicationError {}
-
 class UserFacingError extends ApplicationError {
   constructor(message, statusCode) {
     super(message);
@@ -18,4 +16,4 @@ class UserFacingError extends ApplicationError {
   }
 }
 
-module.exports = { ApplicationError, DatabaseError, UserFacingError };
+module.exports = { ApplicationError, UserFacingError };

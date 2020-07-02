@@ -1,5 +1,4 @@
 const constants = Object.freeze({
-  consoleMessages: Object.freeze({}),
   modelOutput: Object.freeze({
     USER_NAME_RULES:
       'User Name must be alphanumeric with at least one number, one letter, and be between 6-15 characters in length.',
@@ -10,9 +9,13 @@ const constants = Object.freeze({
     REFRESH_TOKEN: 'A valid token string is required.',
     REFRESH_EXPIRES: 'A valid expiration date is required.'
   }),
+  emailOutput: Object.freeze({
+    PASSWORD_RESET: `You are receiving this email because someone has requested to reset the password of your MiddleMan account.\n\nPlease make a PUT request to: `
+  }),
   errorOutput: Object.freeze({
     AUTH_ERROR: 'Authentication was not successful.',
     BAD_REQUEST: 'The request did not contain all required information.',
+    EMAIL_ERROR: 'There was an error sending the requested email.',
     FORBIDDEN: 'You are not authorized to perform this operation.',
     INTERNAL:
       'We are experiencing technical difficulties and are working to resolve the issue.',
@@ -23,6 +26,7 @@ const constants = Object.freeze({
 });
 
 module.exports = {
+  emailOutput: constants.emailOutput,
   modelOutput: constants.modelOutput,
   errorOutput: constants.errorOutput
 };

@@ -63,11 +63,18 @@ class NotFoundError extends UserFacingError {
   }
 }
 
+class ServerError extends UserFacingError {
+  constructor(message) {
+    super(message, 500);
+  }
+}
+
 module.exports = {
   AuthenticationError,
   BadRequestError,
   ForbiddenError,
   MongooseError,
   NotFoundError,
+  ServerError,
   errorOutput
 };
