@@ -1,3 +1,4 @@
+// mongodb-memory-server jest testing
 const { connectDB } = require('../../src/db/database');
 const {
   checkConnection,

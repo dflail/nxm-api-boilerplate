@@ -10,7 +10,9 @@ const constants = Object.freeze({
     REFRESH_EXPIRES: 'A valid expiration date is required.'
   }),
   emailOutput: Object.freeze({
-    PASSWORD_RESET: `You are receiving this email because someone has requested to reset the password of your MiddleMan account.\n\nPlease make a PUT request to: `
+    TEST_PASSWORD_RESET: `You are receiving this email because someone has requested to reset the password of your account.\n\nFOR DEVELOPMENT AND TESTING ONLY: `,
+    TEST_EMAIL_SUBJECT: 'Password Reset',
+    TEST_EMAIL_SUCCESS: 'Email sent.'
   }),
   errorOutput: Object.freeze({
     AUTH_ERROR: 'Authentication was not successful.',

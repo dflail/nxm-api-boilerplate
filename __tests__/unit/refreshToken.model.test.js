@@ -1,3 +1,4 @@
+// mongodb-memory-server jest testing
 const dbHandler = require('../../src/db/testDatabase');
 const { Account, RefreshToken } = require('../../src/db/database');
 const crypto = require('crypto');

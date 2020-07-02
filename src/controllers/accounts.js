@@ -107,16 +107,18 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     process.env.VERSION_URL
   }password/${resetToken}`;
 
-  const message = `${emailOutput.PASSWORD_RESET}${resetUrl}`;
+  const message = `${emailOutput.TEST_PASSWORD_RESET}${resetUrl}`;
 
   try {
     await mailer({
       email: account.email,
-      subject: `${process.env.APP_NAME} Password Reset`,
+      subject: `${process.env.APP_NAME} ${emailOutput.TEST_EMAIL_SUBJECT}`,
       text: message
     });
 
-    res.status(200).json({ success: true, data: 'Email sent.' });
+    res
+      .status(200)
+      .json({ success: true, data: emailOutput.TEST_EMAIL_SUCCESS });
   } catch (err) {
     account.passwordResetToken = undefined;
     account.passwordResetExpire = undefined;

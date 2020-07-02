@@ -1,3 +1,4 @@
+// Jest testing constants for immutability
 'use strict';
 
 const {

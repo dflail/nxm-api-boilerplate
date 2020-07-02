@@ -1,3 +1,4 @@
+// mongodb-memory-server jest testing
 const {
   logDatabaseConnection,
   logServerHeader,
