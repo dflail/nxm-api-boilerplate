@@ -1,5 +1,11 @@
 const { modelOutput } = require('./string-constants');
 
+const environments = Object.freeze({
+  PROD: 'PRODUCTION',
+  TEST: 'TESTING',
+  DEV: 'DEVELOPMENT'
+});
+
 const models = Object.freeze({
   ACCOUNT: Object.freeze({
     MODEL_NAME: 'Account',
@@ -30,5 +36,6 @@ const models = Object.freeze({
 
 module.exports = {
   account: models.ACCOUNT,
-  refreshToken: models.REFRESH_TOKEN
+  refreshToken: models.REFRESH_TOKEN,
+  environments
 };

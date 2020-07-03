@@ -17,6 +17,7 @@ const constants = Object.freeze({
   errorOutput: Object.freeze({
     AUTH_ERROR: 'Authentication was not successful.',
     BAD_REQUEST: 'The request did not contain all required information.',
+    BAD_TOKEN: 'Invalid or Malformed Token',
     EMAIL_ERROR: 'There was an error sending the requested email.',
     FORBIDDEN: 'You are not authorized to perform this operation.',
     INTERNAL:

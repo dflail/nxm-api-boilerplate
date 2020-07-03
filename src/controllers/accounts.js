@@ -3,6 +3,7 @@ const asyncHandler = require('../middleware/async-handler');
 const mailer = require('../utils/mailer');
 const { Account, RefreshToken } = require('../db/database');
 const { emailOutput, errorOutput } = require('../utils/string-constants');
+const { environments } = require('../utils/app-data');
 const {
   AuthenticationError,
   MongooseError,
@@ -144,7 +145,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   });
 
   if (!account) {
-    return next(new BadRequestError('Invalid or Malformed Token'));
+    return next(new BadRequestError(errorOutput.BAD_TOKEN));
   }
 
   account.password = req.body.password;
@@ -163,7 +164,7 @@ const sendTokenResponse = async (account, statusCode, req, res) => {
   );
 
   const options = { expires: expDate, httpOnly: true };
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === environments.PROD) {
     options.secure = true;
   }
 

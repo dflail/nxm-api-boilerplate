@@ -1,4 +1,5 @@
 const { logServerHeader, logError } = require('./utils/console-utils');
+const { environments } = require('./utils/app-data');
 const dotenv = require('dotenv');
 const express = require('express');
 const { connectDB } = require('./db/database');
@@ -19,7 +20,7 @@ const app = express();
 
 app.use(express.json());
 
-if (ENV === 'DEVELOPMENT') {
+if (ENV === environments.DEV) {
   app.use(morgan('dev'));
 }
 
