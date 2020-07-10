@@ -9,7 +9,8 @@ const {
   BadRequestError,
   ForbiddenError,
   MongooseError,
-  NotFoundError
+  NotFoundError,
+  ServerError
 } = require('../../src/class/AppError');
 
 jest.spyOn(global.console, 'log');
@@ -43,6 +44,9 @@ describe('Console Utilities', () => {
     expect(console.log).toBeCalled();
 
     logError(new MongooseError('Mongoose is on fire', 'It burns!', 500));
+    expect(console.log).toBeCalled();
+
+    logError(new ServerError('The server is broken!'));
     expect(console.log).toBeCalled();
 
     logError(new NotFoundError('Testing Not Found Details'));
