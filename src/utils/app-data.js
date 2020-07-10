@@ -6,20 +6,27 @@ const environments = Object.freeze({
   DEV: 'DEVELOPMENT'
 });
 
+const patterns = Object.freeze({
+  USER_NAME: /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,15})$/,
+  EMAIL: /^.+@[^\.].*\.[a-z]{2,}$/,
+  PASSWORD: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{10,})/,
+  PHONE: /^\+(?:[0-9] ?){6,14}[0-9]$/
+});
+
 const models = Object.freeze({
   ACCOUNT: Object.freeze({
     MODEL_NAME: 'Account',
     fields: Object.freeze({
       USER_NAME: Object.freeze({
-        PATTERN: /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,15})$/,
+        PATTERN: patterns.USER_NAME,
         RULES: modelOutput.USER_NAME_RULES
       }),
       EMAIL: Object.freeze({
-        PATTERN: /^.+@[^\.].*\.[a-z]{2,}$/,
+        PATTERN: patterns.EMAIL,
         RULES: modelOutput.EMAIL_RULES
       }),
       PASSWORD: Object.freeze({
-        PATTERN: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{10,})/,
+        PATTERN: patterns.PASSWORD,
         RULES: modelOutput.PASSWORD_RULES
       })
     })
@@ -37,5 +44,6 @@ const models = Object.freeze({
 module.exports = {
   account: models.ACCOUNT,
   refreshToken: models.REFRESH_TOKEN,
-  environments
+  environments,
+  patterns
 };
