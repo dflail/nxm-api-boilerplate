@@ -5,9 +5,9 @@ const constants = Object.freeze({
     EMAIL_RULES: 'Please enter a properly formatted email address.',
     PASSWORD_RULES:
       'Password requires at least 1 lower case character, 1 upper case character, 1 number, 1 special character and must be at least 10 characters in length.',
-    REFRESH_ACCOUNT: 'A valid Account ID is required.',
-    REFRESH_TOKEN: 'A valid token string is required.',
-    REFRESH_EXPIRES: 'A valid expiration date is required.'
+    ACCOUNT_REQ: 'A valid Account ID is required.',
+    TOKEN_REQ: 'A valid token string is required.',
+    EXPIRES_REQ: 'A valid expiration date is required.'
   }),
   emailOutput: Object.freeze({
     TEST_PASSWORD_RESET: `You are receiving this email because someone has requested to reset the password of your account.\n\nFOR DEVELOPMENT AND TESTING ONLY: `,

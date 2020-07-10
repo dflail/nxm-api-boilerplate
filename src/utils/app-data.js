@@ -27,9 +27,9 @@ const models = Object.freeze({
   REFRESH_TOKEN: Object.freeze({
     MODEL_NAME: 'RefreshToken',
     fields: Object.freeze({
-      ACCOUNT: modelOutput.REFRESH_ACCOUNT,
-      TOKEN: modelOutput.REFRESH_TOKEN,
-      EXPIRES: modelOutput.REFRESH_EXPIRES
+      ACCOUNT: modelOutput.ACCOUNT_REQ,
+      TOKEN: modelOutput.TOKEN_REQ,
+      EXPIRES: modelOutput.EXPIRES_REQ
     })
   })
 });
