@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "NODE_ENV=PRODUCTION node src/server",
-    "dev": "nodemon src/server",
+    "server": "nodemon src/server",
     "test": "npx jest --runInBand --verbose --watchAll"
   },
   "repository": {
