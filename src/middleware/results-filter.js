@@ -1,4 +1,9 @@
-const resultsFilter = (model, populate) => async (req, res, next) => {
+/**
+ * @description   Query Filtration
+ * @param   {require('mongoose').Model} model The associated Mongoose model
+ * @param   {Array.<String>} population Array of mongoose.Schema.ObjectId fields to populate.
+ */
+const resultsFilter = (model, population) => async (req, res, next) => {
   const reqQuery = { ...req.query };
 
   trimIgnoredFilters(reqQuery);
@@ -25,8 +30,10 @@ const resultsFilter = (model, populate) => async (req, res, next) => {
 
   query = query.skip(startIndex).limit(limit);
 
-  if (populate) {
-    query = query.populate(populate);
+  if (population && population.length > 0) {
+    population.forEach(item => {
+      query = query.populate(item);
+    });
   }
 
   const results = await query;
