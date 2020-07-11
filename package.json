@@ -2,10 +2,10 @@
   "name": "nxm-api-boilerplate",
   "version": "1.0.0",
   "description": "Boilerplate Node JS / Express / Mongoose api authenticating via JWT access & refresh",
-  "main": "src/app.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "NODE_ENV=PRODUCTION node src/app",
-    "dev": "nodemon src/app",
+    "start": "NODE_ENV=PRODUCTION node src/server",
+    "dev": "nodemon src/server",
     "test": "npx jest --runInBand --verbose --watchAll"
   },
   "repository": {

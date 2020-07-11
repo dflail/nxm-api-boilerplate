@@ -13,7 +13,7 @@ const hpp = require('hpp');
 const accounts = require('./routes/accounts');
 const errorHandler = require('./middleware/error-handler');
 
-dotenv.config({ path: './app.env' });
+dotenv.config({ path: './.env' });
 
 const ENV = process.env.NODE_ENV;
 const app = express();
